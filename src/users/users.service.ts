@@ -1,24 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto, UpdateUserDto } from './dto';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
-  private fakeUsersRepo: CreateUserDto[] = [];
+  private fakeUsersRepo: User[] = [];
 
-  create(user: CreateUserDto) {
+  create(user: CreateUserDto): User {
     this.fakeUsersRepo.push(user);
     return user;
   }
 
-  findAll(): CreateUserDto[] {
+  findAll(): User[] {
     return this.fakeUsersRepo;
   }
 
-  findOne(id: number): CreateUserDto {
+  findOne(id: number): User {
     return this.fakeUsersRepo.find((user) => user.userId === id);
   }
 
-  update(id: number, updateUser: UpdateUserDto) {
+  update(id: number, updateUser: UpdateUserDto): User {
     // Find the index of the item to update
     const indexToUpdate = this.fakeUsersRepo.findIndex(
       (user) => user.userId === id,
@@ -32,13 +33,13 @@ export class UsersService {
     }
   }
 
-  remove(id: number) {
+  remove(id: number): User {
     const userRemoved = this.fakeUsersRepo.find((user) => user.userId == id);
 
     this.fakeUsersRepo = this.fakeUsersRepo.filter(
       (user) => user.userId !== id,
     );
 
-    return { message: 'User deleted', User: userRemoved };
+    return userRemoved;
   }
 }
