@@ -1,14 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto, UpdateUserDto } from './dto';
 import { User } from './entities/user.entity';
+import { instanceToPlain } from 'class-transformer';
 
 @Injectable()
 export class UsersService {
   private fakeUsersRepo: User[] = [];
 
   create(user: CreateUserDto): User {
-    this.fakeUsersRepo.push(user);
-    return user;
+    console.log(instanceToPlain(user))
+    console.log(new User(instanceToPlain(user)))
+
+    const _user= new User(instanceToPlain(user))
+
+    this.fakeUsersRepo.push(_user);
+    return _user;
   }
 
   findAll(): User[] {
@@ -16,7 +22,8 @@ export class UsersService {
   }
 
   findOne(id: number): User {
-    return this.fakeUsersRepo.find((user) => user.userId === id);
+    const user= this.fakeUsersRepo.find((user) => user.userId === id)
+    return  user;
   }
 
   update(id: number, updateUser: UpdateUserDto): User {
@@ -27,7 +34,7 @@ export class UsersService {
 
     if (indexToUpdate !== -1) {
       // Update the item at the found index
-      this.fakeUsersRepo[indexToUpdate] = updateUser;
+      this.fakeUsersRepo[indexToUpdate] = new User(instanceToPlain(updateUser));
 
       return this.fakeUsersRepo[indexToUpdate];
     }
