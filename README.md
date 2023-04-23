@@ -34,4 +34,6 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
-
+## Swagger Api
+http://localhost:3000/api#/
+![User Rest Api](./src/images/swagger.png)
