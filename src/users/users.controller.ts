@@ -8,11 +8,13 @@ import {
   Delete,
   ClassSerializerInterceptor,
   UseInterceptors,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBasicAuth, ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { CreateUserDto, UpdateUserDto } from './dto';
 import { User } from './entities/user.entity';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('users')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -33,7 +35,9 @@ export class UsersController {
     description: 'Get the User based on UserId',
     type: [User],
   })
+  @ApiBearerAuth()
   @Get()
+  @UseGuards(AuthGuard('bearer'))
   findAll(): User[] {
     return this.usersService.findAll();
   }
@@ -44,6 +48,8 @@ export class UsersController {
     description: 'Get the User based on UserId',
     type: User,
   })
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('bearer'))
   @Get(':id')
   findById(@Param('id') id: string): User {
     return this.usersService.findById(id);
