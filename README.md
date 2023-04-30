@@ -47,7 +47,7 @@ http://localhost:3000/api#/
 
 ![Octa app ](./src/images/Create_app.png)
 
-![Octa app ](./src/images/Create_app2.png)
+![Octa app ](./src/images/create_app2.png)
 
 ![Octa app ](./src/images/octaApp.png)
 
