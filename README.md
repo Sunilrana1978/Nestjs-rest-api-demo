@@ -44,10 +44,14 @@ http://localhost:3000/api#/
 1. Create octa account if you does not have 
 2. Login 
 3. Create Octa app : Applications--> Applications --> Create app Intergration
+
+![Octa app ](./src/images/Create_app.png)
+
+![Octa app ](./src/images/Create_app2.png)
+
 ![Octa app ](./src/images/octaApp.png)
 
 ![Octa app ](./src/images/OctaApp1.png)
-
 
 4. Go to Security --> API and see the default Autherization
 ![Octa app ](./src/images/AppAuth.png)
