@@ -49,6 +49,8 @@ http://localhost:3000/api#/
 
 ![Octa app ](./src/images/create_app2.png)
 
+ Add postmand and thunder Clinet Redirect URLs. 
+
 ![Octa app ](./src/images/octaApp.png)
 
 ![Octa app ](./src/images/OctaApp1.png)
