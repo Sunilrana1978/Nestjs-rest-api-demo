@@ -15,7 +15,9 @@ export class AuthService {
     });
 
     this.audience = config.get('OKTA_AUDIENCE');
-  }
+
+    console.log(config.get('ENV'))
+  } 
 
   async validateToken(token: string): Promise<any> {
     const jwt = await this.oktaVerifier.verifyAccessToken(token, this.audience);
