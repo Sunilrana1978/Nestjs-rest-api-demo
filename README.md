@@ -35,7 +35,7 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-## Checkout the git branches for bwlow chapters.
+## Checkout the git branches for below chapters.
 
 ## Chapter 1:  
 * Setting up basic application
