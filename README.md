@@ -38,7 +38,7 @@ $ npm run test:cov
 ## Checkout the git branches for below chapters.
 
 ## Chapter 1:  
-* Setting up basic application
+* Setting up a basic application
 
 ## Chapter 2:  
 * Added User resource 
@@ -47,14 +47,14 @@ $ npm run test:cov
 * CURD routes
 
 ## Chapter 3: 
-* Added Swagger documentaion 
+* Added Swagger documentation
 
 ## Chapter 4: 
 *  Used class-transformer to hide attribute from response
 
 ## Chapter 5: 
-* Added in memory repository interface
-* Implemented inmemory repository
+* Added in-memory repository interface
+* Implemented in-memory repository
 
 ## Chapter 6: 
 * Added .env file to store enviroment variable 
