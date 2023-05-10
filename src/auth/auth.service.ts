@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import * as OktaJwtVerifier from '@okta/jwt-verifier';
 
 import { ConfigService } from '../config/config.service';
@@ -7,6 +7,7 @@ import { ConfigService } from '../config/config.service';
 export class AuthService {
   private oktaVerifier: any;
   private audience: string;
+  private scope: string;
 
   constructor(private readonly config: ConfigService) {
     this.oktaVerifier = new OktaJwtVerifier({
@@ -15,12 +16,23 @@ export class AuthService {
     });
 
     this.audience = config.get('OKTA_AUDIENCE');
+    this.scope = config.get('SCOPE');
 
     console.log(config.get('ENV'))
   } 
 
   async validateToken(token: string): Promise<any> {
-    const jwt = await this.oktaVerifier.verifyAccessToken(token, this.audience);
+
+
+    try {
+      var jwt = await this.oktaVerifier.verifyAccessToken(token, this.audience);
+    } catch (error) {
+      throw new HttpException('Invalid Token', HttpStatus.FORBIDDEN)
+    }
+
+    if (!jwt.claims.scp.includes(this.scope)) {
+      throw new HttpException('UNAUTHORIZED', HttpStatus.UNAUTHORIZED);
+    }
     return jwt;
   }
 }
