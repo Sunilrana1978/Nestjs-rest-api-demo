@@ -39,7 +39,7 @@ http://localhost:3000/api#/
 ![User Rest Api](./src/images/swagger.png)
 
 
-##Octa Authentication
+##Octa Authentication using OIDC - OpenID Connect --> Single-Page Application 
 
 1. Create octa account if you does not have 
 2. Login 
@@ -73,3 +73,22 @@ http://localhost:3000/api#/
 7. Thunder clinet
 
 ![Octa app ](./src/images/Thunder_Clinet.png)
+
+
+##Octa Authentication using API Services 
+Interact with Okta APIs using the scoped OAuth 2.0 access tokens for machine-to-machine authentication.
+
+![API service ](./src/images/APIServices.png)
+
+## Create jwt token using following crul command 
+
+```bash
+
+curl --location --request POST 'https://dev-79012153.okta.com/oauth2/default/v1/token?grant_type=client_credentials&scope=nestapi' \
+--header 'Accept: application/json' \
+--header 'authorization: Basic MG9hOWZucmc4NUtqblkxd1o1ZDc6Z1cxTUFlaEJxdTlGRzZJNlRMU2wwSTI2MlBQWG9MTDk0S1hSMl9WOQ==' \
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--header 'Cookie: DT=DI18qUHjM2oRFuXSIW0g9WFLw; JSESSIONID=BC8623DA5D474FB7165044D7342D6502; t=default'
+
+```
+
