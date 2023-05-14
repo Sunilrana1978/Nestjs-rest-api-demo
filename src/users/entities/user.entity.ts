@@ -1,6 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Exclude, Expose } from 'class-transformer';
+import { Exclude, Expose, Type } from 'class-transformer';
 import { UUID } from 'crypto';
+import { AddressDTO } from '../dto/address.dto';
+
+enum UserType {
+  ADMIN = 'admin',
+  USER = 'user',
+}
 
 export class User {
   /**
@@ -35,11 +41,14 @@ export class User {
   email: string;
 
   @ApiProperty({
-    example: 'xxxxxxxxx',
-    description: 'The password of the user',
+    example: 'Admin or user',
+    description: 'The email of the user',
   })
-  @Exclude()
-  password: string;
+  type: UserType;
+
+  @ApiProperty()
+  @Type(() => AddressDTO)
+  addresses: AddressDTO[];
   
   @ApiProperty({
     example: '2023-04-23T19:26:04.297Z',

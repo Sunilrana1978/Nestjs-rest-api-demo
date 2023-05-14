@@ -15,6 +15,8 @@ import { UsersService } from './users.service';
 import { CreateUserDto, UpdateUserDto } from './dto';
 import { User } from './entities/user.entity';
 import { AuthGuard } from '@nestjs/passport';
+import { plainToClass } from 'class-transformer';
+import { validate } from 'class-validator';
 
 @ApiTags('users')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -25,7 +27,16 @@ export class UsersController {
   @ApiOperation({ summary: 'Create User' })
   @ApiResponse({ status: 403, description: 'Forbidden.', type: [User] })
   @Post()
-  create(@Body() user: CreateUserDto): User {
+  async create(@Body() payload: CreateUserDto): Promise<User> {
+
+    const user = plainToClass(CreateUserDto, payload);
+    const errors = await validate(user, { skipMissingProperties: true });
+
+    if (errors.length > 0) {
+      // Handle validation errors
+      throw new Error('Validation failed!');
+    }
+
     return this.usersService.create(user);
   }
 
