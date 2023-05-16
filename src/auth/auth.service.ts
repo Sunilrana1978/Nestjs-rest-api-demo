@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import * as OktaJwtVerifier from '@okta/jwt-verifier';
+import OktaJwtVerifier from '@okta/jwt-verifier';
 
 import { ConfigService } from '../config/config.service';
 
