@@ -9,6 +9,7 @@ import {
   ClassSerializerInterceptor,
   UseInterceptors,
   UseGuards,
+  NotFoundException,
 } from '@nestjs/common';
 import { ApiBasicAuth, ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UsersService } from './users.service';
@@ -27,7 +28,7 @@ export class UsersController {
   @ApiOperation({ summary: 'Create User' })
   @ApiResponse({ status: 403, description: 'Forbidden.', type: [User] })
   @Post()
-  async create(@Body() payload: CreateUserDto): Promise<User> {
+  async create(@Body() payload: CreateUserDto): Promise<void> {
 
     const user = plainToClass(CreateUserDto, payload);
     const errors = await validate(user, { skipMissingProperties: true });
@@ -36,8 +37,7 @@ export class UsersController {
       // Handle validation errors
       throw new Error('Validation failed!');
     }
-
-    return this.usersService.create(user);
+    await this.usersService.create(user);
   }
 
   @ApiOperation({ summary: 'Get all User' })
@@ -48,9 +48,16 @@ export class UsersController {
   })
   @ApiBearerAuth()
   @Get()
-  @UseGuards(AuthGuard('bearer'))
-  findAll(): User[] {
-    return this.usersService.findAll();
+  // @UseGuards(AuthGuard('bearer'))
+  async findAll(): Promise<User[]>{
+    const users = await this.usersService.findAll().then(result => {
+      return result;
+    });
+    console.log (users);
+    if (!users) {
+      throw new NotFoundException('User not found');
+    }
+    return users;
   }
 
   @ApiOperation({ summary: 'Get User' })
@@ -62,8 +69,15 @@ export class UsersController {
   @ApiBearerAuth()
   @UseGuards(AuthGuard('bearer'))
   @Get(':id')
-  findById(@Param('id') id: string): User {
-    return this.usersService.findById(id);
+  async findById(@Param('id') id: string): Promise<User | null> {
+
+    const user = await this.usersService.findById(id).then(result => {
+      return result;
+    });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
   }
 
   @ApiOperation({ summary: 'Update User' })
@@ -73,8 +87,8 @@ export class UsersController {
     type: User,
   })
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto): User {
-    return this.usersService.update(id, updateUserDto);
+  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto): Promise<void>  {
+    await this.usersService.update(id, updateUserDto);
   }
 
   @ApiOperation({ summary: 'Delete User' })
@@ -84,7 +98,7 @@ export class UsersController {
     type: User,
   })
   @Delete(':id')
-  delete(@Param('id') id: string): void {
-    return this.usersService.delete(id);
+  async delete(@Param('id') id: string): Promise<void>  {
+    await this.usersService.delete(id);
   }
 }

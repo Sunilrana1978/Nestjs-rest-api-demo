@@ -5,6 +5,7 @@
 #.env
 *.env
 .aws
+.serverless
 
 # Logs
 logs

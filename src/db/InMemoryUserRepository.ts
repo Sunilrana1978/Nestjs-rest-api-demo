@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { User } from '../users/entities/user.entity';
-import { IUserRepository } from './user.repository';
+import { IUserRepository } from './IUserRepository';
 
 @Injectable()
 export class InMemoryRepository implements IUserRepository {
@@ -10,25 +10,25 @@ export class InMemoryRepository implements IUserRepository {
     this.data = new Map<string, User>();
   }
 
-  create(item: User): User {
+  async create(item: User): Promise<void> {
     this.data.set(item.userId, item);
-    return item;
   }
 
-  findAll(): User[] {
-    return [...this.data.values()];
+  async findAll(): Promise<User[] | null> {
+
+    const users = [...this.data.values()]
+    return users.length > 0 ? users : null;
   }
 
-  findById(id: string): User {
+  async findById(id: string): Promise<User | null> {
     return this.data.get(id);
   }
 
-  update(id: string, item: User): User {
+  async update(id: string, item: User): Promise<void>  {
     this.data.set(id, item);
-    return item;
   }
 
-  delete(id: string): void {
+  async delete(id: string): Promise<void> {
     this.data.delete(id);
   }
 }

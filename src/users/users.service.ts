@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { CreateUserDto, UpdateUserDto } from './dto';
 import { User } from './entities/user.entity';
 import { instanceToPlain } from 'class-transformer';
-import { IUserRepository } from 'src/db/user.repository';
+import { IUserRepository } from 'src/db/IUserRepository';
 
 @Injectable()
 export class UsersService {
@@ -11,23 +11,23 @@ export class UsersService {
     private readonly IUserRepository: IUserRepository,
   ) {}
 
-  create(entity: CreateUserDto): User {
-    return this.IUserRepository.create(new User(instanceToPlain(entity)));
+  async create(entity: CreateUserDto): Promise<void> {
+    this.IUserRepository.create(new User(instanceToPlain(entity)));
   }
 
-  findAll(): User[] {
+  async findAll():Promise<User[] | null> {
     return this.IUserRepository.findAll();
   }
 
-  findById(id: string): User {
+  async findById(id: string): Promise<User | null> {
     return this.IUserRepository.findById(id);
   }
 
-  update(id: string, entity: UpdateUserDto): User {
-    return this.IUserRepository.update(id, new User(instanceToPlain(entity)));
+  async update(id: string, entity: UpdateUserDto):  Promise<void>  {
+    this.IUserRepository.update(id, new User(instanceToPlain(entity)));
   }
 
-  delete(id: string): void {
+  async delete(id: string): Promise<void>  {
     this.IUserRepository.delete(id);
   }
 }
