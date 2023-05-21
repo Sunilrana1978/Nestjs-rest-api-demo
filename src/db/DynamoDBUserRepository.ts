@@ -82,7 +82,8 @@ export class DynamoDBUserRepository implements IUserRepository {
         ":createdAt":updates.createdAt,
       },
     };
-
+    
+    console.log(params)
     await this.dynamoDB.update(params).promise();
   }
 
