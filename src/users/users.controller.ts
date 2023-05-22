@@ -11,7 +11,13 @@ import {
   UseGuards,
   NotFoundException,
 } from '@nestjs/common';
-import { ApiBasicAuth, ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBasicAuth,
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { CreateUserDto, UpdateUserDto } from './dto';
 import { User } from './entities/user.entity';
@@ -29,7 +35,6 @@ export class UsersController {
   @ApiResponse({ status: 403, description: 'Forbidden.', type: [User] })
   @Post()
   async create(@Body() payload: CreateUserDto): Promise<void> {
-
     const user = plainToClass(CreateUserDto, payload);
     const errors = await validate(user, { skipMissingProperties: true });
 
@@ -49,15 +54,8 @@ export class UsersController {
   @ApiBearerAuth()
   @Get()
   // @UseGuards(AuthGuard('bearer'))
-  async findAll(): Promise<User[]>{
-    const users = await this.usersService.findAll().then(result => {
-      return result;
-    });
-    console.log (users);
-    if (!users) {
-      throw new NotFoundException('User not found');
-    }
-    return users;
+  async findAll(): Promise<User[] | null> {
+    return await this.usersService.findAll();
   }
 
   @ApiOperation({ summary: 'Get User' })
@@ -70,14 +68,7 @@ export class UsersController {
   @UseGuards(AuthGuard('bearer'))
   @Get(':id')
   async findById(@Param('id') id: string): Promise<User | null> {
-
-    const user = await this.usersService.findById(id).then(result => {
-      return result;
-    });
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-    return user;
+    return await this.usersService.findById(id);
   }
 
   @ApiOperation({ summary: 'Update User' })
@@ -87,8 +78,13 @@ export class UsersController {
     type: User,
   })
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto): Promise<void>  {
-    await this.usersService.update(id, updateUserDto);
+  async update(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ): Promise<void> {
+    return await this.usersService.update(id, updateUserDto).then((result) => {
+      return result;
+    });
   }
 
   @ApiOperation({ summary: 'Delete User' })
@@ -98,7 +94,9 @@ export class UsersController {
     type: User,
   })
   @Delete(':id')
-  async delete(@Param('id') id: string): Promise<void>  {
-    await this.usersService.delete(id);
+  async delete(@Param('id') id: string): Promise<void> {
+    return await this.usersService.delete(id).then((result) => {
+      return result;
+    });
   }
 }

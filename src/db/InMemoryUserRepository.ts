@@ -15,8 +15,7 @@ export class InMemoryRepository implements IUserRepository {
   }
 
   async findAll(): Promise<User[] | null> {
-
-    const users = [...this.data.values()]
+    const users = [...this.data.values()];
     return users.length > 0 ? users : null;
   }
 
@@ -24,7 +23,7 @@ export class InMemoryRepository implements IUserRepository {
     return this.data.get(id);
   }
 
-  async update(id: string, item: User): Promise<void>  {
+  async update(id: string, item: User): Promise<void> {
     this.data.set(id, item);
   }
 

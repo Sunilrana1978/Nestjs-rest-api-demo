@@ -49,7 +49,7 @@ export class User {
   @ApiProperty()
   @Type(() => AddressDTO)
   addresses: AddressDTO[];
-  
+
   @ApiProperty({
     example: '2023-04-23T19:26:04.297Z',
     description: 'Created on date',

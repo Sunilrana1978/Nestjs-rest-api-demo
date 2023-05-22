@@ -27,7 +27,15 @@ import { BaseDto } from './base.dto';
 //   readonly password: string;
 // }
 
-import { IsString, ValidateNested, IsEmail, IsNotEmpty, IsArray, ArrayNotEmpty, IsEnum } from 'class-validator';
+import {
+  IsString,
+  ValidateNested,
+  IsEmail,
+  IsNotEmpty,
+  IsArray,
+  ArrayNotEmpty,
+  IsEnum,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 import { AddressDTO } from './address.dto';
 
@@ -37,7 +45,6 @@ enum UserType {
 }
 
 export class CreateUserDto extends BaseDto {
-  
   @ApiProperty()
   @IsNotEmpty()
   readonly userId: UUID;
@@ -60,7 +67,7 @@ export class CreateUserDto extends BaseDto {
   @ApiProperty()
   @IsEnum(UserType)
   type: UserType;
-  
+
   @ApiProperty()
   @IsArray()
   @ArrayNotEmpty()

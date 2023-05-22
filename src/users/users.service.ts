@@ -15,7 +15,7 @@ export class UsersService {
     this.IUserRepository.create(new User(instanceToPlain(entity)));
   }
 
-  async findAll():Promise<User[] | null> {
+  async findAll(): Promise<User[] | null> {
     return this.IUserRepository.findAll();
   }
 
@@ -23,11 +23,11 @@ export class UsersService {
     return this.IUserRepository.findById(id);
   }
 
-  async update(id: string, entity: UpdateUserDto):  Promise<void>  {
+  async update(id: string, entity: UpdateUserDto): Promise<void> {
     this.IUserRepository.update(id, new User(instanceToPlain(entity)));
   }
 
-  async delete(id: string): Promise<void>  {
+  async delete(id: string): Promise<void> {
     this.IUserRepository.delete(id);
   }
 }
