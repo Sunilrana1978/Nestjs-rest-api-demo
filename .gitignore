@@ -2,6 +2,10 @@
 /dist
 /node_modules
 
+.aws
+.serverless
+.env
+
 # Logs
 logs
 *.log
