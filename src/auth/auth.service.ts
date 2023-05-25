@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import OktaJwtVerifier from '@okta/jwt-verifier';
 
 import { ConfigService } from '../config/config.service';
+import OktaJwtVerifier from '@okta/jwt-verifier';
 
 @Injectable()
 export class AuthService {
@@ -18,14 +18,16 @@ export class AuthService {
     this.audience = config.get('OKTA_AUDIENCE');
     this.scope = config.get('SCOPE');
 
-    console.log(config.get('ENV'));
-  }
+    console.log(config.get('ENV'))
+  } 
 
   async validateToken(token: string): Promise<any> {
+
+
     try {
       var jwt = await this.oktaVerifier.verifyAccessToken(token, this.audience);
     } catch (error) {
-      throw new HttpException('Invalid Token', HttpStatus.FORBIDDEN);
+      throw new HttpException('Invalid Token', HttpStatus.FORBIDDEN)
     }
 
     if (!jwt.claims.scp.includes(this.scope)) {

@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { CreateUserDto, UpdateUserDto } from './dto';
 import { User } from './entities/user.entity';
 import { instanceToPlain } from 'class-transformer';
-import { IUserRepository } from 'src/db/IUserRepository';
+import { IUserRepository } from '../db/IUserRepository';
 
 @Injectable()
 export class UsersService {
