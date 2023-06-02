@@ -3,9 +3,10 @@
 /node_modules
 
 #.env
-*.env
+# *.env
 .aws
 .serverless
+.dynamodb
 
 # Logs
 logs

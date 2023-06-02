@@ -2,21 +2,30 @@ service: nestjs-rest-app-demo
 
 plugins:
   - serverless-offline
-
+  - serverless-dynamodb-local
+  - serverless-plugin-optimize
 provider:
   name: aws
   runtime: nodejs16.x
   stage: dev
   region: us-west-2
+  apiGateway:
+      shouldStartNameWithService: true
+  
+  environment: 
+      DYNAMODB_ENDPOINT: ${self:custom.endpoints.dynamodbURL}
+
   iamRoleStatements:
     - Effect: Allow
       Action:
-        - 'dynamodb:*'
-        - 'lambda:InvokeFunctionConfiguration'
-        - 'lambda:InvokeFunction'
-        - 'lambda:GetFunction'
+        - 'dynamodb:DescribeTable'
+        - 'dynamodb:Query'
+        - 'dynamodb:Scan'
+        - 'dynamodb:GetItem'
+        - 'dynamodb:PutItem'
+        - 'dynamodb:UpdateItem'
+        - 'dynamodb:DeleteItem'
       Resource: "*"
-
 
 functions:
   main:
@@ -29,12 +38,24 @@ functions:
           method: ANY
           path: '{proxy+}'
 
+custom:
+    tableName: users
+    dynamodb:
+        stages:
+            - dev
+        start:
+            port: 8000
+            inMemory: true
+            migrate: true
+    endpoints:
+      dynamodbURL: 'http://localhost:8000'
+
 resources:
   Resources:
     UsersTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: users
+        TableName: ${self:custom.tableName}
         AttributeDefinitions:
           - AttributeName: PK
             AttributeType: S
@@ -46,5 +67,5 @@ resources:
           - AttributeName: SK
             KeyType: RANGE
         ProvisionedThroughput:
-          ReadCapacityUnits: 5
-          WriteCapacityUnits: 5
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
