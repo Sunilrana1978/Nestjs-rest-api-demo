@@ -9,6 +9,7 @@ import {
   ClassSerializerInterceptor,
   UseInterceptors,
   UseGuards,
+  HttpStatus,
 } from '@nestjs/common';
 import {
   // ApiBasicAuth,
@@ -31,7 +32,12 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @ApiOperation({ summary: 'Create User' })
-  @ApiResponse({ status: 403, description: 'Forbidden.', type: [User] })
+  @ApiResponse({ status: HttpStatus.ACCEPTED, description: 'Save.' })
+  @ApiResponse({ status: HttpStatus.FORBIDDEN, description: 'Forbidden.' })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: 'Server Error.',
+  })
   @Post()
   async create(@Body() payload: CreateUserDto): Promise<void> {
     const user = plainToClass(CreateUserDto, payload);
@@ -45,10 +51,11 @@ export class UsersController {
   }
 
   @ApiOperation({ summary: 'Get all User' })
+  @ApiResponse({ status: HttpStatus.OK, description: 'Success.', type: [User] })
+  @ApiResponse({ status: HttpStatus.FORBIDDEN, description: 'Forbidden.' })
   @ApiResponse({
-    status: 200,
-    description: 'Get the User based on UserId',
-    type: [User],
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: 'Server Error.',
   })
   @ApiBearerAuth()
   @Get()
@@ -58,10 +65,11 @@ export class UsersController {
   }
 
   @ApiOperation({ summary: 'Get User' })
+  @ApiResponse({ status: HttpStatus.OK, description: 'Success.', type: User })
+  @ApiResponse({ status: HttpStatus.FORBIDDEN, description: 'Forbidden.' })
   @ApiResponse({
-    status: 200,
-    description: 'Get the User based on UserId',
-    type: User,
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: 'Server Error.',
   })
   @ApiBearerAuth()
   @UseGuards(AuthGuard('bearer'))
@@ -75,6 +83,11 @@ export class UsersController {
     status: 200,
     description: 'Update the User based on UserId',
     type: User,
+  })
+  @ApiResponse({ status: HttpStatus.FORBIDDEN, description: 'Forbidden.' })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: 'Server Error.',
   })
   @Patch(':id')
   async update(
@@ -91,6 +104,11 @@ export class UsersController {
     status: 200,
     description: 'Delete the User based on UserId',
     type: User,
+  })
+  @ApiResponse({ status: HttpStatus.FORBIDDEN, description: 'Forbidden.' })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: 'Server Error.',
   })
   @Delete(':id')
   async delete(@Param('id') id: string): Promise<void> {
