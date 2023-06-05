@@ -34,9 +34,11 @@ functions:
       - http:
           method: ANY
           path: /
+          cors: true
       - http:
           method: ANY
           path: '{proxy+}'
+          cors: true
 
 custom:
     tableName: users
@@ -49,6 +51,10 @@ custom:
             migrate: true
     endpoints:
       dynamodbURL: 'http://localhost:8000'
+    serverless-offline:
+      httpPort: 3003
+    optimize:
+      external: ['swagger-ui-dist']
 
 resources:
   Resources:
